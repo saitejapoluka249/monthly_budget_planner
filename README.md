@@ -35,7 +35,7 @@ This project is a full-stack web application built using **Node.js**, **Express*
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/monthly-budget-project.git
+    git clone https://github.com/saitejapoluka249/monthly_budget_planner.git
     ```
 2. Install dependencies:
     ```bash
