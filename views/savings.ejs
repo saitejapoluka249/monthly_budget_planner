@@ -1,0 +1,210 @@
+<style>
+    *{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+body{
+    font-family: Helvetica;
+    -webkit-font-smoothing: antialiased;
+    background-color: #f6f5f7;
+}
+h2{
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    padding: 30px 0;
+}
+.buttoncss{
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Table Styles */
+
+.table-wrapper{
+    margin: 10px 70px 70px;
+    box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+}
+
+.fl-table {
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+}
+
+.fl-table td, .fl-table th {
+    text-align: center;
+    padding: 8px;
+}
+
+.fl-table td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 12px;
+}
+
+.fl-table thead th {
+    color: #ffffff;
+    background: #4FC3A1;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #324960;
+}
+
+.fl-table tr:nth-child(even) {
+    background: #F8F8F8;
+}
+
+/* Responsive */
+
+@media (max-width: 767px) {
+    .fl-table {
+        display: block;
+        width: 100%;
+    }
+    .table-wrapper:before{
+        content: "Scroll horizontally >";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: white;
+        padding: 0 0 10px;
+    }
+    .fl-table thead, .fl-table tbody, .fl-table thead th {
+        display: block;
+    }
+    .fl-table thead th:last-child{
+        border-bottom: none;
+    }
+    .fl-table thead {
+        float: left;
+    }
+    .fl-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+    .fl-table td, .fl-table th {
+        padding: 20px .625em .625em .625em;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 120px;
+        font-size: 13px;
+        text-overflow: ellipsis;
+    }
+    .fl-table thead th {
+        text-align: left;
+        border-bottom: 1px solid #f7f7f9;
+    }
+    .fl-table tbody tr {
+        display: table-cell;
+    }
+    .fl-table tbody tr:nth-child(odd) {
+        background: none;
+    }
+    .fl-table tr:nth-child(even) {
+        background: transparent;
+    }
+    .fl-table tr td:nth-child(odd) {
+        background: #F8F8F8;
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tr td:nth-child(even) {
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tbody td {
+        display: block;
+        text-align: center;
+    }
+}
+input[type=text] {
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 3px solid #ccc;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  outline: none;
+}
+
+input[type=text]:focus {
+  border: 3px solid #555;
+}
+</style>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<h1 style="color: #324960; text-align: center;" id="a3"></h1>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%- include('./partials/homelink') %>
+<div class="table-wrapper">
+    <input type="hidden" id="a1" value="<%=find1%>">
+    <input type="hidden" id="a2" value="<%=find2%>">
+    <input type="hidden" id="a4" value="<%=m1%>">
+    <table class="fl-table" id="myTable">
+        <thead>
+            
+        <tr>
+            <th>Date</th>
+            <th>Income</th>
+            <th>Expenses</th>
+            <th>Savings</th>
+        </tr>
+        </thead>
+       
+    </table>
+</div>
+<script>
+     var x1=document.getElementById("a1").value;
+  var y1=document.getElementById("a2").value;
+  var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var dateObj=new Date();
+  var yr=dateObj.getUTCFullYear();
+ var data1=x1.split(",");
+ for(let i=0;i<data1.length;i++){
+   data1[i]=parseInt(data1[i]);
+ }
+ var data2=y1.split(",");
+ for(let i=0;i<data1.length;i++){
+   data2[i]=parseInt(data2[i]);
+ }
+ var mths=document.getElementById("a4").value;
+ var mth=parseInt(mths);
+ var txt="Savings in "+months[mth];
+    var table = document.getElementById("myTable");
+    for(let i=0;i<data1.length;i++){
+  var x=(i+1)+"/"+parseInt(mth+1)+"/"+yr;
+  var row = table.insertRow(i+1);
+  var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+  var cell3 = row.insertCell(2);
+  var cell4 = row.insertCell(3);
+  cell1.innerHTML = x;
+  cell2.innerHTML = data2[i];
+  cell3.innerHTML = data1[i];
+  if(data1[i]>data2[i]){
+    cell4.innerHTML = data2[i]-data1[i];
+    cell4.style.color="red";
+  }
+  else{
+    cell4.innerHTML = data2[i]-data1[i];
+    cell4.style.color="green";
+  }
+  }
+  document.getElementById("a3").innerHTML=txt;
+</script>

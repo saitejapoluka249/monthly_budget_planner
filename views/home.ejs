@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+  margin: 0;
+  font-family: "Lato", sans-serif;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-evenly; /* Space out the buttons evenly */
+  margin-top: 40px; /* Increased space above the buttons */
+  margin-bottom: 40px; /* Space below the buttons */
+}
+
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color:  #424242;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  font-weight: bold;
+}
+
+.sidebar a {
+  display: block;
+  color: #FF416C;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between; /* Space out the items horizontally */
+  margin-top: 20px; /* Add space from the top */
+  margin-bottom: 40px; /* Add some space below */
+}
+
+.sidebar a.active {
+  background-color: #FF416C;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+  background-color: #f6f5f7;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}
+
+.button {
+  background-color: #139099;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 10px;
+  top: 150px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+.show, .show1 {
+  background-color: #139099;
+  width: 150px;
+  padding: 20px;
+  color: white;
+  text-align: center;
+  margin-right: 20px; /* Space between boxes */
+  margin-bottom: 20px; /* Space between boxes and buttons */
+}
+
+.show1 {
+  background-color: #FF416C;
+}
+
+.show2 {
+  background-color: #949494;
+  width: 100%;
+  padding: 30px;
+  position: relative;
+  height: 100px;
+  font-size: 30px;
+  color: white;
+  text-align: center;
+  margin-top: 20px;
+}
+
+</style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<div class="sidebar">
+  <a class="active" href="/home">Home</a>
+  <a href="/expense/viewexpenses">My Expenses</a>
+  <a href="/income/viewincome">My Income</a>
+  <a href="/saving/viewsaving">My Saving</a>
+  <a href="/month/monthsaving">Past Statistics</a>
+  <a href="/timeline/viewtimeline">View Timeline</a>
+  <a href="/logout">Logout</a>
+</div>
+
+<div class="content">
+<h1 class="show2">Monthly Budget Planner</h1>
+
+<div class="dropdown">
+  <a href="/imageopen" style="text-align: center;display: block;position: absolute;right: 10px;top:190px"><img src="<%=item.myImages%>" alt="add" height="70px" width="70px" style="border-radius: 50%;"></a>
+  <div class="dropdown-content">
+    <a href="/viewprofile">View Profile</a>
+    <a href="/timeline/addtimeline">Add Time Line</a>
+    <a href="/todo/viewtodo">Todo Plan</a>
+    <a href="/logout">Logout</a>
+  </div>
+</div>
+<div class="container">
+  <div class="show" style="margin-left: 450px;">
+    <h1 id="inc"></h1>
+    <h2>Income</h2>
+  </div>
+
+  <div class="show1" style="margin-right: 352px;">
+    <h1 id="exp"></h1>
+    <h2>Expenses</h2>
+  </div>
+</div>
+<div class="button-container">
+<form method="post" action="/viewasline">
+  <input type="submit" class="button" value="Line Graph">
+</form>
+<form method="post" action="/viewasbar">
+  <input type="submit" class="button" value="Bar Graph">
+</form>
+<form method="post" action="/viewaspie">
+  <input type="submit" class="button" value="Pie Chart">
+</form>
+<form method="post" action="/viewasdough">
+  <input type="submit" class="button" value="Doughnut Chart">
+</form>
+</div>
+
+<input type="hidden" id="a1" value="<%=find1%>">
+<input type="hidden" id="a2" value="<%=find2%>">
+<input type="hidden" id="b1" value="<%=gtype%>">
+
+
+<canvas id="myChart" style="width:100%;max-width:800px; height:40%; margin-top: 10%;margin-left: 25%;border: 20px solid lightslategray;"></canvas>
+</div>
+
+<script>
+  var x1=document.getElementById("a1").value;
+  var y1=document.getElementById("a2").value;
+  var xValues = []; 
+  var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var dateObj=new Date();
+  var day1=dateObj.toLocaleDateString('en-US');
+  var mth=dateObj.getUTCMonth();
+  var z=day1.split("/");
+  var day2=parseInt(z[1]);
+  for(let i=1;i<=day2;i++){
+    xValues.push(i);
+  }
+  var sum1=0;
+  var sum2=0;
+  var data1=x1.split(",");
+  for(let i=0;i<data1.length;i++){
+    data1[i]=parseInt(data1[i]);
+    sum1=sum1+data1[i];
+  }
+  var data2=y1.split(",");
+  for(let i=0;i<data1.length;i++){
+    data2[i]=parseInt(data2[i]);
+    sum2=sum2+data2[i];
+  }
+  var txt="Monthly Budget in "+months[mth];
+  if(document.getElementById("b1").value==""){
+    new Chart("myChart", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{ 
+          data: data1,
+          borderColor: "red",
+          fill: false
+        }, { 
+          data: data2,
+          borderColor: "green",
+          fill: false
+        }]
+      },
+      options: {
+        legend: {display: false},
+        title: {
+          display: true,
+          text: txt
+        }
+      }
+    });
+  }
+  else if(document.getElementById("b1").value=="Bar"){
+    var xValues = ["Expenses","Income"];
+    var yValues = [sum1,sum2];
+    var barColors = ["red", "green"];
+    new Chart("myChart", {
+      type: "bar",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        legend: {display: false},
+        title: {
+          display: true,
+          text: txt
+        },
+        scales: {
+          yAxes: [{ticks: {beginAtZero: true}}]
+        }
+      }
+    });
+  }
+  else if(document.getElementById("b1").value=="Pie"){
+    var xValues = ["Expenses","Income"];
+    var yValues = [sum1,sum2];
+    var barColors = ["red", "green"];
+    new Chart("myChart", {
+      type: "pie",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: txt
+        }
+      }
+    });
+  }
+  else if(document.getElementById("b1").value=="Dough"){
+    var xValues = ["Expenses","Income"];
+    var yValues = [sum1,sum2];
+    var barColors = ["red", "green"];
+    new Chart("myChart", {
+      type: "doughnut",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: txt
+        }
+      }
+    });
+  }
+  document.getElementById("exp").innerHTML=sum1;
+  document.getElementById("inc").innerHTML=sum2;
+</script>
+</body>
+</html>

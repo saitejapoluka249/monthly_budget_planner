@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin: 0;
+  font-family: "Lato", sans-serif;
+  background-color: #f6f5f7;
+}
+
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color:  #b2b2b2;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  font-weight: bold;
+}
+
+.sidebar a {
+  display: block;
+  color: #FF416C;
+  padding: 16px;
+  text-decoration: none;
+}
+ 
+.sidebar a.active {
+  background-color: #FF416C;
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+  background-color: #f6f5f7;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 5px;
+  top: 75px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.show{
+  background-color: green;
+  width: 150px;
+  padding: 30px;
+  position: absolute;
+  right: 750px;
+  height: 85px;
+  color: white;
+}
+.show1{
+  background-color: red;
+  width: 150px;
+  padding: 30px;
+  position: absolute;
+  right: 500px;
+  height: 85px;
+  color: white;
+}
+</style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    &nbsp;<a href="/home" style="color: red; top: 3%; left:10%;position: absolute;font-size: 30px;">Home</a>
+<h1 style="color: orangered; text-align: center;" id="a4"></h1>
+<input type="hidden" id="a1" value="<%=find1%>">
+<input type="hidden" id="a2" value="<%=find2%>">
+<input type="hidden" id="a3" value="<%=m1%>">
+<input type="hidden" id="b1" value="<%=gtype%>">
+<canvas id="myChart" style="width:100%;max-width:1000px;margin-top: 10%;margin-left: 30%;border: 20px solid lightslategray;"></canvas>
+</div>
+<script>
+  var x1=document.getElementById("a1").value;
+  var y1=document.getElementById("a2").value;
+  var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var mth=parseInt(document.getElementById("a3").value);
+  var sum1=0;
+  var sum2=0;
+  var x=[];
+ var data1=x1.split(",");
+ for(let i=0;i<data1.length;i++){
+   data1[i]=parseInt(data1[i]);
+   sum1=sum1+data1[i];
+   x.push(i+1);
+ }
+ var data2=y1.split(",");
+ for(let i=0;i<data1.length;i++){
+   data2[i]=parseInt(data2[i]);
+   sum2=sum2+data2[i];
+ }
+var txt="Monthly Budget Statistics in "+months[mth];
+if(document.getElementById("b1").value=="Bar"){
+  var xValues = ["Expenses","Income"];
+var yValues = [sum1,sum2];
+var barColors = ["red", "green"];
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: txt
+    },
+    scales: {
+      yAxes: [{ticks: {min: 0, max:Math.max(...yValues)}}]
+    }
+  }
+});}
+else if(document.getElementById("b1").value=="Line"){
+  new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: x,
+    datasets: [{ 
+      data: data1,
+      borderColor: "red",
+      fill: false
+    }, { 
+      data: data2,
+      borderColor: "green",
+      fill: false
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: txt
+    }
+  }
+});
+}
+</script>
+</body>
+</html>
